@@ -93,7 +93,7 @@ class HLSTM():
         cls_model = self.hlstm_cls_train()
         reg_dummy = self.hlstm_reg_train()
         try:
-            reg_dummy.load_weights(reg_weights)
+            reg_dummy.set_weights(reg_weights)
         except ValueError as e:
             print("Error : Regression weights provided not compatible with the model")
 
@@ -117,12 +117,12 @@ class HLSTM():
         final_model = self.hlstm_test()
         cls_dummy = self.hlstm_cls_train()
         try:
-            cls_dummy.load_weights(cls_weights)
+            cls_dummy.set_weights(cls_weights)
         except ValueError as e:
             print("Error : Classification weights provided not compatible with the model")
         reg_dummy = self.hlstm_reg_train()
         try:
-            reg_dummy.load_weights(reg_weights)
+            reg_dummy.set_weights(reg_weights)
         except ValueError as e:
             print("Error : Regression weights provided not compatible with the model")
 
