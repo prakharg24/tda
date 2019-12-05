@@ -18,7 +18,7 @@ class PPCSDataLoader():
         self.set_scalers(scalerX, scalerY)
 
         # Convert sensors to dataset that can be used directly by the learning model
-        self.sliding_window(param_dict['lower_step'], param_dict['sensor_channels'], param_dict['num_outputs'], param_dict['start_overhead'], param_dict['slide_step'], mode)
+        self.sliding_window(param_dict['lower_step'], param_dict['sensor_channels'], param_dict['num_outputs'], param_dict['start_overhead'], param_dict['sliding_step'], mode)
 
 
     def scaler_from_name(self, sc_name):
@@ -50,11 +50,11 @@ class PPCSDataLoader():
             self.sensors = self.scalerX.transform(self.sensors)
             self.delay = self.scalerY.transform(self.delay)
         except TypeError as e:
-            print("Scaler not recognized")
+            print("Error : Scaler not recognized")
             exit()
 
 
-    def sliding_window(self, step, input_size, num_outputs, output_st, slide_step, mode):
+    def sliding_window(self, step, input_size, num_outputs, output_st, sliding_step, mode):
         # Create training/testing dataset
         X_shape = list(self.sensors.shape)
         X_shape[-1] = int(X_shape[-1]/input_size)
@@ -76,7 +76,7 @@ class PPCSDataLoader():
 
             if(mode=="train"):
                 # create sliding window
-                for someite in range(output_st//2, output_st + num_outputs//2, slide_step):
+                for someite in range(num_outputs//2, num_outputs + output_st//2, sliding_step):
                     end_ind = min(len(eX[0])//step, (eyp[0]-200)//(2*step) + someite)
                     st_ind = end_ind - num_outputs - output_st
 
@@ -84,7 +84,6 @@ class PPCSDataLoader():
                     slide_y_cls.append([[float(ey[0])>0.]])
                     slide_y_reg.append([[ey[0]]])
                     slide_y_pos.append(eyp[0])
-
             else:
                 # create test dataset (which is the complete trace)
                 end_ind = len(eX[0])//step
@@ -106,6 +105,8 @@ class PPCSDataLoader():
         self.y_reg = np.array(slide_y_reg)
         self.y_pos = np.array(slide_y_pos)
 
+    def get_scalers(self):
+        return (self.scalerX, self.scalerY)
 
     def get_data(self):
         return (self.X, self.y_cls, self.y_reg, self.y_pos)
