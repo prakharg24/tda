@@ -17,8 +17,8 @@ class PPCSDataLoader():
         # Setup scalers and scale data
         self.set_scalers(scalerX, scalerY)
 
-        # Convert sensors to training data using sliding windows
-        self.sliding_window(param_dict['lower_step'], param_dict['sensor_channels'], param_dict['num_outputs'], param_dict['start_overhead'], mode)
+        # Convert sensors to dataset that can be used directly by the learning model
+        self.sliding_window(param_dict['lower_step'], param_dict['sensor_channels'], param_dict['num_outputs'], param_dict['start_overhead'], param_dict['slide_step'], mode)
 
 
     def scaler_from_name(self, sc_name):
@@ -54,8 +54,8 @@ class PPCSDataLoader():
             exit()
 
 
-    def sliding_window(self, step, input_size, num_outputs, output_st, mode):
-        # Create training examples by using sliding window
+    def sliding_window(self, step, input_size, num_outputs, output_st, slide_step, mode):
+        # Create training/testing dataset
         X_shape = list(self.sensors.shape)
         X_shape[-1] = int(X_shape[-1]/input_size)
         seq_length = int(X_shape[-1]/step)
@@ -75,77 +75,36 @@ class PPCSDataLoader():
                 continue
 
             if(mode=="train"):
-                for someite in range(num_outputs//2, num_outputs + output_st//2, 1):
-                    # someite = num_outputs
-                    end_ind = min(len(eX[0])//step, (eyo[0]-200)//(2*step) + someite)
+                # create sliding window
+                for someite in range(output_st//2, output_st + num_outputs//2, slide_step):
+                    end_ind = min(len(eX[0])//step, (eyp[0]-200)//(2*step) + someite)
                     st_ind = end_ind - num_outputs - output_st
-                    new_X.append(eX[:,st_ind*step:end_ind*step])
-                    # break
+
+                    slide_X.append(ex[:,st_ind*step:end_ind*step])
+                    slide_y_cls.append([[float(ey[0])>0.]])
+                    slide_y_reg.append([[ey[0]]])
+                    slide_y_pos.append(eyp[0])
+
             else:
-                # end_ind = (eyo[0]-200)//30 + num_outputs
+                # create test dataset (which is the complete trace)
                 end_ind = len(eX[0])//step
                 st_ind = 1
-                new_X.append(eX[:,st_ind*step:end_ind*step])
 
-                # end_ind = (eyo[0]-200)//30 + num_outputs//2
-                # if(isFixed):
-                #     st_ind = end_ind - num_outputs - output_st
-                # else:
-                #     st_ind = 1
-                # new_X.append(eX[:,st_ind*step:end_ind*step])
-                # print("H3", end_ind - st_ind)
-
-
-            delay_st = output_st
-
-            y_temp_reg = []
-            y_temp_cls = []
-            we_temp = []
-            y_temp_reg.append([ey[0]])
-            if(ey[0]==0.):
-                y_temp_cls.append([0.])
-            else:
-                y_temp_cls.append([1.])
-
-            if(mode=="train"):
-                for someite in range(num_outputs//2, num_outputs + output_st//2, 1):
-                    # someite = num_outputs
-                    new_y_cls.append(np.array(y_temp_cls))
-                    # break
-            else:
-                new_y_cls.append(np.array(y_temp_cls))
-            if(mode=="train"):
-                for someite in range(num_outputs//2, num_outputs + output_st//2, 1):
-                    # someite = num_outputs
-                    new_y_reg.append(np.array(y_temp_reg))
-                    # break
-            else:
-                new_y_reg.append(np.array(y_temp_reg))
-
-            new_y_pos.append(eyo[0])
-            # print("Done")
-            # if(len(new_X[-1][0])==40*step):
-            #     print(end_ind)
-            #     print(delay_st)
-            #     print(np.shape(y_temp_cls))
+                slide_X.append(ex[:,st_ind*step:end_ind*step])
+                slide_y_cls.append([[float(ey[0])>0.]])
+                slide_y_reg.append([[ey[0]]])
+                slide_y_pos.append(eyp[0])
 
         X = []
-        shape_dict = {}
-        for ele in new_X:
-            # print(np.shape(ele))
-            # ele_four = np.abs(np.fft.fft(ele, axis=1))
-            # ele = np.concatenate((ele, ele_four), axis=0)
-            # ele_temp = ele.reshape((2*input_size, -1, step))
+        for ele in slide_X:
             ele_temp = ele.reshape((input_size, -1, step))
             ele_temp = ele_temp.transpose((1, 2, 0))
             X.append(ele_temp)
 
-        self.X = X
-        print(list(np.shape(self.X)))
-
-        self.y_cls = new_y_cls
-        self.y_reg = new_y_reg
-        self.y_pos = new_y_pos
+        self.X = np.array(X)
+        self.y_cls = np.array(slide_y_cls)
+        self.y_reg = np.array(slide_y_reg)
+        self.y_pos = np.array(slide_y_pos)
 
 
     def get_data(self):
