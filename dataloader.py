@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
 class PPCSDataLoader():
-    def __init__(self, filename, param_dict, mode, scalerX='Robust', scalerY='MinMax'):
+    def __init__(self, filename, lower_step, sensor_channels, window_length, start_overhead,
+                sliding_step, mode, scalerX='Robust', scalerY='MinMax'):
         data_df = pd.read_csv(filename)
         # Delay value and Delay launch point
         self.delay = np.array(data_df[['delay']])
@@ -18,7 +19,7 @@ class PPCSDataLoader():
         self.set_scalers(scalerX, scalerY)
 
         # Convert sensors to dataset that can be used directly by the learning model
-        self.sliding_window(param_dict['lower_step'], param_dict['sensor_channels'], param_dict['num_outputs'], param_dict['start_overhead'], param_dict['sliding_step'], mode)
+        self.sliding_window(lower_step, sensor_channels, window_length, start_overhead, sliding_step, mode)
 
 
     def scaler_from_name(self, sc_name):
@@ -54,7 +55,7 @@ class PPCSDataLoader():
             exit()
 
 
-    def sliding_window(self, step, input_size, num_outputs, output_st, sliding_step, mode):
+    def sliding_window(self, step, input_size, window_length, output_st, sliding_step, mode):
         # Create training/testing dataset
         X_shape = list(self.sensors.shape)
         X_shape[-1] = int(X_shape[-1]/input_size)
@@ -76,7 +77,7 @@ class PPCSDataLoader():
 
             if(mode=="train"):
                 # create sliding window
-                for someite in range(num_outputs//2, num_outputs + output_st//2, sliding_step):
+                for someite in range((window_length - output_st)//2, window_length - output_st//2, sliding_step):
                     end_ind = min(len(eX[0])//step, (eyp[0]-200)//(2*step) + someite)
                     st_ind = end_ind - num_outputs - output_st
 
