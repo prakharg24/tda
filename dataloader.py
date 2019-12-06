@@ -4,7 +4,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, Ma
 
 class PPCSDataLoader():
     def __init__(self, filename, lower_step, sensor_channels, window_length, start_overhead,
-                sliding_step, mode, scalerX='Robust', scalerY='MinMax'):
+                 mode, sliding_step=1, scalerX='Robust', scalerY='MinMax'):
         data_df = pd.read_csv(filename)
         # Delay value and Delay launch point
         self.delay = np.array(data_df[['delay']])
@@ -87,7 +87,7 @@ class PPCSDataLoader():
                     slide_y_pos.append(eyp[0])
             else:
                 # create test dataset (which is the complete trace)
-                end_ind = len(eX[0])//step
+                end_ind = len(ex[0])//step
                 st_ind = 1
 
                 slide_X.append(ex[:,st_ind*step:end_ind*step])

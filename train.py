@@ -40,16 +40,16 @@ parser.add_argument('--batch_size', type=int, help='Batch Size', default=64)
 args = parser.parse_args(sys.argv[1:])
 
 regression_data = PPCSDataLoader(args.reg_csv, args.lower_step, args.sensor_channels,
-                                 args.window_length, args.start_overhead, args.sliding_step,
-                                 'train')
+                                 args.window_length, args.start_overhead, 'train',
+                                 sliding_step=args.sliding_step)
 
 scalerX, scalerY = regression_data.get_scalers()
 joblib.dump(scalerX, model_prefix + '_scalerX.joblibdump')
 joblib.dump(scalerY, model_prefix + '_scalerY.joblibdump')
 
 classification_data = PPCSDataLoader(args.cls_csv, args.lower_step, args.sensor_channels,
-                                 args.window_length, args.start_overhead, args.sliding_step,
-                                 'train', scalerX=scalerX, scalerY=scalerY)
+                                 args.window_length, args.start_overhead, 'train',
+                                 sliding_step=args.sliding_step, scalerX=scalerX, scalerY=scalerY)
 
 print("Data Loaded")
 
