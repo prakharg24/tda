@@ -62,12 +62,14 @@ Y_pos = np.concatenate([regY_pos, clsY_pos], axis=0)
 
 final_model = load_model(args.model_prefix + "_complete.hdf5")
 
+print("Starting evaluation")
 fnl_pred = final_model.predict(X)
 predC = fnl_pred[0]
 predR = fnl_pred[1]
 
 cls_strategy = get_cls_strategy(args.cls_strategy)
 reg_strategy = get_reg_strategy(args.reg_strategy, args.reg_strategy_param)
+
 
 strategy_out = []
 characterisation_latency = []
@@ -86,7 +88,8 @@ for i in range(len(predC)):
     else:
         strategy_out.append([0.])
 
-print("\n\nRESULTS\n\n")
+print("\n\nRESULTS")
+print("-------\n\n")
 
 print("Average Latency (in sec) : ", np.mean(characterisation_latency)*30)
 
