@@ -78,8 +78,8 @@ class PPCSDataLoader():
             if(mode=="train"):
                 # create sliding window
                 for someite in range((window_length - output_st)//2, window_length - output_st//2, sliding_step):
-                    end_ind = min(len(eX[0])//step, (eyp[0]-200)//(2*step) + someite)
-                    st_ind = end_ind - num_outputs - output_st
+                    end_ind = min(len(ex[0])//step, (eyp[0]-200)//(2*step) + someite)
+                    st_ind = end_ind - window_length
 
                     slide_X.append(ex[:,st_ind*step:end_ind*step])
                     slide_y_cls.append([[float(ey[0])>0.]])

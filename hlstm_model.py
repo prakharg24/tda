@@ -84,7 +84,7 @@ class HLSTM():
         reg_model = self.hlstm_reg_train()
 
         adam = Adam(clipvalue=0.5,lr=0.001, beta_1=0.9, beta_2=0.99, epsilon=None, decay=0.001, amsgrad=False)
-        model.compile(loss='mean_squared_error', optimizer=adam)
+        reg_model.compile(loss='mean_squared_error', optimizer=adam)
 
         return reg_model
 
@@ -108,7 +108,7 @@ class HLSTM():
             cls_model.get_layer(name='cls_lstm_' + str(i+1)).trainable = False
 
         adam = Adam(clipvalue=0.5,lr=0.001, beta_1=0.9, beta_2=0.99, epsilon=None, decay=0.001, amsgrad=False)
-        model.compile(loss='binary_crossentropy', optimizer=adam)
+        cls_model.compile(loss='binary_crossentropy', optimizer=adam)
 
         return cls_model
 
