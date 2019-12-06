@@ -1,5 +1,6 @@
 from dataloader import PPCSDataLoader
 from hlstm_model import HLSTM
+from strategy import get_reg_strategy, get_cls_strategy
 import numpy as np
 import random
 import argparse
@@ -60,3 +61,16 @@ final_model = load_model(args.model_complete)
 fnl_pred = final_model.predict(X)
 predC = fnl_pred[0]
 predR = fnl_pred[1]
+
+cls_strategy = get_cls_strategy(args.cls_strategy)
+reg_strategy = get_reg_strategy(args.reg_strategy, args.reg_strategy_param)
+
+strategy_out = []
+for i in range(10):
+    del_st = (Y_pos[i]-800)//30 + 1
+    currC = predC[i][del_st:]
+    currR = predR[i][del_st:]
+
+    cls_out, cls_loc = cls_strategy.get_prediction(currC)
+    currR = currR[cls_loc:]
+    reg_out, reg_loc = reg_strategy.get_prediction(currR)
