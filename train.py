@@ -1,4 +1,4 @@
-from dataloader import PPCSDataLoader
+from dataloader import PPCSDataLoader, AGCDataLoader
 from hlstm_model import HLSTM
 import numpy as np
 import random
