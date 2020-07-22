@@ -1,0 +1,26 @@
+Copyright (c) <2020>
+<Advanced Digital Sciences Center, Singapore>
+<Nanyang Technological University, Singapore>
+<Singapore University of Technology and Design>
+<University of Illinois at Urbana-Champaign>
+All rights reserved.
+
+The software design comprising "Delay Attack Protection" source code and affiliated documentation is
+Copyright by the authors Prakhar Ganesh, Xin Lou, Yao Chen, Rui Tan, David K.Y. Yau, Deming Chen, Marianne Winslett, and
+the Advanced Digital Sciences Center, Singapore, the Nanyang Technological University, Singapore,
+the Singapore University of Technology and Design and the University of Illinois at Urbana-Champaign.
+Only non-commercial, not-for-profit use of this design is permitted. No part of this 
+software design may be incorporated into a commercial product without the written consent 
+of the authors.  Similarly, use of this software to assist in the development of new 
+commercial applications is prohibited, unless the written consent of the authors is 
+obtained. To obtain such a written consent, please contact the following three authors: 
+(prakhar.g@adsc-create.edu.sg), (lou.xin@adsc-create.edu.sg), (yao.chen@adsc-create.edu.sg). 
+
+This software is provided "as is" with no warranties or guarantees of support.
+All users of this software design must take the software copy from this site. You may 
+modify or use the source code for other non-commercial, not-for-profit research endeavors,
+provided that all copyright attribution on the source code is retained, and the original 
+or modified source code is not redistributed, in whole or in part, or included in or with 
+any commercial product, except by written agreement with the authors, and full and complete 
+copyright attribution for use of the code is included in any resulting publications. 
+Subject to these conditions, the software is provided free of charge to all interested parties.
