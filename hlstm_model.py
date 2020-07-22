@@ -83,7 +83,7 @@ class HLSTM():
         # Step 1 : A randomized regression model
         reg_model = self.hlstm_reg_train()
 
-        adam = Adam(clipvalue=0.5,lr=0.001, beta_1=0.9, beta_2=0.99, epsilon=None, decay=0.001, amsgrad=False)
+        adam = Adam(lr=0.001)
         reg_model.compile(loss='mean_squared_error', optimizer=adam)
 
         return reg_model
@@ -107,7 +107,7 @@ class HLSTM():
             cls_model.get_layer(name='cls_lstm_' + str(i+1)).set_weights(reg_dummy.get_layer(name='reg_lstm_' + str(i+1)).get_weights())
             cls_model.get_layer(name='cls_lstm_' + str(i+1)).trainable = False
 
-        adam = Adam(clipvalue=0.5,lr=0.001, beta_1=0.9, beta_2=0.99, epsilon=None, decay=0.001, amsgrad=False)
+        adam = Adam(lr=0.001)
         cls_model.compile(loss='binary_crossentropy', optimizer=adam)
 
         return cls_model
