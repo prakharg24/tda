@@ -1,12 +1,20 @@
-# delay_attack_protection
+# Delay Attack Protection
 Code for our implementation of a learning model for protection against time delay attacks
 
-## Dataset format
-1. 4 different datasets `train_classification`, `train_regression`, `test_classification` and `test_regression`
-2. Separate csv files for each dataset with the following columns -
+## Downloading the datset
+1. Download the dataset file from Google Drive [here](https://drive.google.com/file/d/11OYtPBZoj8naV7snSTgvbuSG2VimzQYw/view?usp=sharing)
+2. Place the zip file inside the main folder and extract.
 
-| ind | delay | delay_st | gasflow.200 | gasflow.202 | ... | gasflow.1500 | pressure.200 | ... |
-| --- | ----- | -------- | ----------- | ----------- | --- | ------------ | ------------ | --- |
+## Dataset format
+1. Two different sets of dataset, for PPCS and AGC systems.
+2. 4 different dataset files for each system, namely `Trainset_classification`, `Trainset_regression`, `Testset_classification` and `Testset_regression`.
+
+## File Structure
+1. `dataloader.py` contains code to read csv and convert data to required format. Also contains data augmentation for training.
+2. `hlstm_model.py` contains the model definition
+3. `utils.py` contains various utility function, eg. implementation of various output interpretation strategies
+4. `train.py` contains the code to perform training in two phases. Final complete model is saved.
+5. `evaluate.py` contains the code to perform the final evaluation.
 
 ## Model Training
 
