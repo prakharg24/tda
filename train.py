@@ -32,6 +32,7 @@ parser.add_argument('--dense_hidden_units', type=int, help='Number of hidden uni
 parser.add_argument('--upper_lstm_units', type=int, help='Number of hidden units in the upper LSTM', default=512)
 parser.add_argument('--lower_lstm_units', type=int, help='Number of hidden units in the lower LSTM', default=256)
 parser.add_argument('--dropout', type=float, help='Dropout percentage', default=0.1)
+parser.add_argument('--test_outputs', type=int, help='Number of final outputs on whom the output strategies will be applied', default=20)
 
 parser.add_argument('--epoch_regression', type=int, help='Number of epochs while training the regression model', default=100)
 parser.add_argument('--epoch_classification', type=int, help='Number of epochs while training the classification model', default=50)
@@ -62,7 +63,7 @@ config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.7
 set_session(tf.Session(config=config))
 
-hlstm_class = HLSTM(regX[0].shape[1:3], args.upper_depth, args.lower_depth, args.dense_hidden_units, args.lower_lstm_units, args.upper_lstm_units, args.dropout)
+hlstm_class = HLSTM(regX[0].shape[1:3], args.test_outputs, args.upper_depth, args.lower_depth, args.dense_hidden_units, args.lower_lstm_units, args.upper_lstm_units, args.dropout)
 
 model = hlstm_class.get_regression_model()
 print("Training Regression Model")
