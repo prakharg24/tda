@@ -1,4 +1,4 @@
-from dataloader import PPCSDataLoader
+from dataloader import PPCSDataLoader, AGCDataloader
 from hlstm_model import HLSTM
 from utils import get_reg_strategy, get_cls_strategy, get_mae, get_rmse, get_confusion_matrix
 import numpy as np
