@@ -8,7 +8,7 @@ from keras.models import Sequential, Model
 from keras.layers.recurrent import LSTM
 
 class HLSTM():
-    def __init__(self, input_shape, upper_depth=2, lower_depth=2, dense_hidden_units=512,
+    def __init__(self, input_shape, test_outputs, upper_depth=2, lower_depth=2, dense_hidden_units=512,
                 lower_lstm_units=256, upper_lstm_units=512, dropout=0.1):
         self.input_shape = input_shape
         self.upper_depth = upper_depth
@@ -17,6 +17,7 @@ class HLSTM():
         self.dense_hidden_units = dense_hidden_units
         self.lower_lstm_units = lower_lstm_units
         self.upper_lstm_units = upper_lstm_units
+        self.test_outputs = test_outputs
 
         assert (upper_depth>0 and lower_depth>0 and upper_lstm_units>0 and lower_lstm_units>0 and dense_hidden_units>0 and dropout<1 and dropout>=0)
 
@@ -72,7 +73,7 @@ class HLSTM():
         inputs = Input(shape=(None, self.input_shape[0], self.input_shape[1]))
 
         x = self.build_backbone(inputs, name_prefix="comb")
-        sliced = Lambda(lambda x: x[:,20:,:], output_shape=(None, self.upper_lstm_units))(x)
+        sliced = Lambda(lambda x: x[:,self.test_outputs:,:], output_shape=(None, self.upper_lstm_units))(x)
         classification_branch = self.build_classification_branch(sliced)
         regression_branch = self.build_regression_branch(sliced)
 
