@@ -5,6 +5,9 @@ Code for our implementation of a learning model for protection against time dela
 1. Download the dataset file from Google Drive [here](https://drive.google.com/file/d/11OYtPBZoj8naV7snSTgvbuSG2VimzQYw/view?usp=sharing)
 2. Place the zip file inside the main folder and extract.
 
+## Downloading the model
+1. Download the model files for both PPCS and AGC from Google Drive [here](https://drive.google.com/drive/folders/1mNZFCNzrFWOhWykfz5pOi52HE7bjlHrg?usp=sharing)
+
 ## Dataset format
 1. Two different sets of dataset, for PPCS and AGC systems.
 2. 4 different dataset files for each system, namely `Trainset_classification`, `Trainset_regression`, `Testset_classification` and `Testset_regression`.
