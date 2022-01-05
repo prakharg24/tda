@@ -2,5 +2,5 @@ numpy
 sklearn
 joblib
 tensorflow
-keras ???
+keras
 pandas
