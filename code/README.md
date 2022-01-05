@@ -1,4 +1,4 @@
-*Note : The repo is not maintained actively. However, we encourage you to contact us if you find any part of the code outdated or any other errors. Additionally, we recommend to train the models on your own machine and avoid using pre-trained models if possible.*
+*Note : The repo is not updated actively. However, we encourage you to contact us (or raise an issue) if you find any part of the code outdated or any other errors. Additionally, we recommend to train the models on your own machine and avoid using pre-trained models if possible, as pretrained models across different library versions can cause issues.*
 
 # Requirements
 Please check [requirements.txt](requirements.txt) for all major library requirements.

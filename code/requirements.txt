@@ -1,0 +1,6 @@
+numpy
+sklearn
+joblib
+tensorflow
+keras ???
+pandas
